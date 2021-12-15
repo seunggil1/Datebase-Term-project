@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+    <link href="{% static 'style.css' %}" rel="stylesheet" type="text/css">
+    <title>Add Record</title>
+</head>
+<body>
+
+    <div style="display : table; width: 100%">
+        <div class='titleBox'>Database Management System</div>
+    </div>
+
+<div class="outer">
+    <div class = "inner">
+        <span>
+            <h2>Add Record</h2>
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for student in students %}
+                    <p style="color:red; font-weight:bold">{{ student.0|safe }}</p>
+                {% endfor %}
+                <button type="submit">Submit</button>
+            </form>
+            {% comment %} <form action={% url 'search' %} method="GET">
+                <button type="submit">Cancel</button>
+            </form> {% endcomment %}
+        </span>
+    </div>
+</div>
+
+<table class='table' border="1">
+    <th>studentID</th>
+    <th>name</th>
+    <th>score</th>
+    <th>country</th>
+    {% for student in students %}
+        <tr>
+            <td>{{student.0}}</td>
+            <td>{{student.1}}</td>
+            <td>{{student.2}}</td>
+            <td>{{student.3}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

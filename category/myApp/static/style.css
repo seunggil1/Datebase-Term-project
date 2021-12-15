@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+
+.titleBox{
+    width: 100%;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    font-weight: bold;
+    height: 1cm;
+    color: white;
+    background-color: midnightblue;
+}
+.table {
+    display : table;
+    width: 100%;
+}
+
+.outer {
+    text-align: center;
+}
+  
+.inner {
+    display: inline-block;
+}
+form {
+    display: inline;
+}
