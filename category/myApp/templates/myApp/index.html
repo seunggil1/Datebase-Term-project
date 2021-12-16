@@ -12,6 +12,20 @@
         <div class='titleBox'>Database Management System</div>
     </div>
 
+<form action={% url 'students' %} method="GET">
+    <button type="submit">Add Student</button>
+</form>
+
+<form action={% url 'professors' %} method="GET">
+    <button type="submit">Add Professors</button>
+</form>
+<form action={% url 'countries' %} method="GET">
+    <button type="submit">Add Country</button>
+</form>
+<form action={% url 'covid' %} method="GET">
+    <button type="submit">Add Covid</button>
+</form>
+
 <div class="outer">
     <div class = "inner">
         <span>
@@ -23,18 +37,15 @@
                 {% endfor %}
                 <button type="submit">Submit</button>
             </form>
-            {% comment %} <form action={% url 'search' %} method="GET">
-                <button type="submit">Cancel</button>
-            </form> {% endcomment %}
         </span>
     </div>
 </div>
 
 <table class='table' border="1">
-    <th>studentID</th>
-    <th>name</th>
-    <th>score</th>
-    <th>country</th>
+    {% for col in column %}
+        <th> {{ col }} </th>
+    {% endfor %}
+
     {% for student in students %}
         <tr>
             <td>{{student.0}}</td>
