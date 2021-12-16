@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.db import connection
 from django.http import HttpResponse
-
+from django.http.response import HttpResponseNotAllowed, Http404
+import csv
 
 def index(request):
     result = dict()
@@ -94,5 +95,21 @@ def covid(request):
     return render(request, "myApp/import.html", result)
 
 def csvImport(request):
-    print(1)
-    return render(request, "myApp/import.html")
+    if request.method == 'GET':
+        return HttpResponseNotAllowed("Not Allowed")
+    a = request.FILES['csv'].read()
+    b = a.decode('utf-8')
+
+    for row in b.split():
+        for r in row.split(','):
+            print(r, end=' ')
+        print()
+    if request.POST['type'] == 'Student':
+        return students(request)
+    elif request.POST['type'] == 'Professor':
+        return professors(request)
+    elif request.POST['type'] == 'Country':
+        return countries(request)
+    elif request.POST['type'] == 'Covid':
+        return covid(request)
+    return Http404("Internal Error")

@@ -12,6 +12,14 @@
         <div class='titleBox'>{{ type }} Management</div>
     </div>
 
+    <form action={% url 'csvImport' %} method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="csv">Choose a csv:</label>
+        <input type="hidden" name="type" value={{ type }}>
+        <input type="file" name="csv" accept=".csv" required>
+            <input type="submit">Submit</button>
+    </form>
+
     <table class='table' border="1">
         {% for col in column %}
             <th> {{ col }} </th>
