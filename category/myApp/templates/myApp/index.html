@@ -12,49 +12,23 @@
         <div class='titleBox'>Database Management System</div>
     </div>
 
+<br>
+ 
 <form action={% url 'students' %} method="GET">
     <button type="submit">Add Student</button>
-</form>
-
+</form> 
 <form action={% url 'professors' %} method="GET">
     <button type="submit">Add Professors</button>
-</form>
+</form> 
 <form action={% url 'countries' %} method="GET">
     <button type="submit">Add Country</button>
-</form>
+</form> 
 <form action={% url 'covid' %} method="GET">
     <button type="submit">Add Covid</button>
-</form>
-
-<div class="outer">
-    <div class = "inner">
-        <span>
-            <h2>Add Record</h2>
-            <form action="" method="post">
-                {% csrf_token %}
-                {% for student in students %}
-                    <p style="color:red; font-weight:bold">{{ student.0|safe }}</p>
-                {% endfor %}
-                <button type="submit">Submit</button>
-            </form>
-        </span>
-    </div>
-</div>
-
-<table class='table' border="1">
-    {% for col in column %}
-        <th> {{ col }} </th>
-    {% endfor %}
-
-    {% for student in students %}
-        <tr>
-            <td>{{student.0}}</td>
-            <td>{{student.1}}</td>
-            <td>{{student.2}}</td>
-            <td>{{student.3}}</td>
-        </tr>
-    {% endfor %}
-</table>
+</form> 
+<form action={% url 'covid' %} method="GET">
+    <button type="submit">Search</button>
+</form> 
 
 </body>
 </html>

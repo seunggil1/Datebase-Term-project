@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.db import connection
-from django.http import HttpResponse
+from django.http import HttpResponseNotFound
 from django.http.response import HttpResponseNotAllowed, Http404
-import csv
 
 def index(request):
     result = dict()
@@ -15,7 +14,7 @@ def index(request):
         cursor.execute(sqlQuery)
         row = cursor.fetchall()
         result["students"] = row
-
+        cursor.close()
         # with connection.cursor() as cursor:
 
 
@@ -26,7 +25,7 @@ def index(request):
 def csvImportPage(request):
     return render(request, "myApp/import.html")
 
-def students(request):
+def students(request, message = ""):
     result = dict()
     try:
         with connection.cursor() as cursor:
@@ -34,16 +33,17 @@ def students(request):
             cursor.execute(sqlQuery)
             row = cursor.fetchall()
 
-            result["type"] = "Student"
+            result["type"] = "Students"
             result["column"] = ('studentID','name','score','country')
             result["datas"] = row
+            result["result"] = message
 
     except Exception as e:
         print(e)
 
     return render(request, "myApp/import.html", result)
 
-def professors(request):
+def professors(request, message = ""):
     result = dict()
     try:
         with connection.cursor() as cursor:
@@ -51,16 +51,17 @@ def professors(request):
             cursor.execute(sqlQuery)
             row = cursor.fetchall()
 
-            result["type"] = "Professor"
+            result["type"] = "Professors"
             result["column"] = ('facultyID','name','age','country')
             result["datas"] = row
+            result["result"] = message
 
     except Exception as e:
         print(e)
 
     return render(request, "myApp/import.html", result)
 
-def countries(request):
+def countries(request, message = ""):
     result = dict()
     try:
         with connection.cursor() as cursor:
@@ -68,16 +69,17 @@ def countries(request):
             cursor.execute(sqlQuery)
             row = cursor.fetchall()
 
-            result["type"] = "Country"
+            result["type"] = "Countries"
             result["column"] = ('countryName','population','city')
             result["datas"] = row
+            result["result"] = message
 
     except Exception as e:
         print(e)
 
     return render(request, "myApp/import.html", result)
 
-def covid(request):
+def covid(request, message = ""):
     result = dict()
     try:
         with connection.cursor() as cursor:
@@ -88,6 +90,7 @@ def covid(request):
             result["type"] = "Covid"
             result["column"] = ('patientID','city')
             result["datas"] = row
+            result["result"] = message
 
     except Exception as e:
         print(e)
@@ -95,21 +98,35 @@ def covid(request):
     return render(request, "myApp/import.html", result)
 
 def csvImport(request):
-    if request.method == 'GET':
+    if request.method != 'POST':
         return HttpResponseNotAllowed("Not Allowed")
-    a = request.FILES['csv'].read()
-    b = a.decode('utf-8')
+    try:
+        a = request.FILES['csv'].read()
+        b = a.decode('utf-8')
 
-    for row in b.split():
-        for r in row.split(','):
-            print(r, end=' ')
-        print()
-    if request.POST['type'] == 'Student':
-        return students(request)
-    elif request.POST['type'] == 'Professor':
-        return professors(request)
-    elif request.POST['type'] == 'Country':
-        return countries(request)
+        datas = ""
+        for row in b.splitlines():
+            data = "("
+            for r in row.split(','):
+                data += "'{}',".format(r)
+            data = data[:-1] + "),"
+            datas += data
+        with connection.cursor() as cursor:
+            sqlQuery = "Insert INTO {} values {};".format(request.POST['type'], datas[:-1])
+            cursor.execute(sqlQuery)
+            row = cursor.fetchall()
+            connection.commit()
+        result = "Success!"
+    except Exception as e:
+        result = "Error : " + str(e)
+
+    if request.POST['type'] == 'Students':
+        return students(request,result)
+    elif request.POST['type'] == 'Professors':
+        return professors(request,result)
+    elif request.POST['type'] == 'Countries':
+        return countries(request,result)
     elif request.POST['type'] == 'Covid':
-        return covid(request)
-    return Http404("Internal Error")
+        return covid(request,result)
+
+    return HttpResponseNotFound("")
