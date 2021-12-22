@@ -10,7 +10,8 @@ class Query:
             sqlQuery = """
                 Select country, avg(score)
                 From students
-                group by country;"""
+                group by country
+                order by country;"""
             cursor.execute(sqlQuery)
             row = cursor.fetchall()
             connection.commit()
@@ -27,7 +28,8 @@ class Query:
                 Select Countries.city, avg(Students.score)
                 from Students join Countries 
                 on Students.country = Countries.countryName
-                group by city"""
+                group by city
+                order by Countries.city;"""
             cursor.execute(sqlQuery)
             row = cursor.fetchall()
             connection.commit()
@@ -106,6 +108,41 @@ class Query:
                             and studentsWithCity.city = cityMaxScore.city
                     ) as Stu
                     on Pro.city = Stu.city;"""
+            cursor.execute(sqlQuery)
+            row = cursor.fetchall()
+            connection.commit()
+
+        except Exception as e:
+            return tuple('','','','')
+        return row
+
+    @staticmethod
+    def queryType5():
+        try:
+            cursor = Query.cursor
+            sqlQuery = """
+                Select name, city
+                From Students join Countries
+                on Students.country = Countries.countryName
+                WHERE city in (
+                    Select *
+                    From(
+                        Select ci.city
+                        From (
+                            Select city, sum(population) as cityPopulation
+                            FROM Countries
+                            Group by city) as ci
+                        join (
+                            select city, count(patientID) as cityPatient
+                            from covid
+                            group by city
+                            ) as co
+                            on ci.city = co.city
+                        order by (cityPatient / cityPopulation) desc
+                        LIMIT 3
+                    ) as tmp
+                )
+                order by city;"""
             cursor.execute(sqlQuery)
             row = cursor.fetchall()
             connection.commit()

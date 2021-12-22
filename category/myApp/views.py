@@ -46,6 +46,9 @@ def searchPage(request):
             result["column"] = ('professorName','studentName')
             result["datas"] = Query.queryType4()
 
+        elif queryType == 5:
+            result["column"] = ('studentName','cityName')
+            result["datas"] = Query.queryType5()
         return render(request, "myApp/search.html", result)
     else :
         return HttpResponseNotFound("")

@@ -38,6 +38,11 @@
             {% csrf_token %}
             <input type="hidden" name="type" value=4>
             <button type="submit">Query 4</button>
+        </form>
+        <form action={% url 'search' %} method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="type" value=5>
+            <button type="submit">Query 5</button>
         </form> 
 
         <div>
