@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <link href="{% static 'style.css' %}" rel="stylesheet" type="text/css">
+    <title>Search</title>
+
+    <body>
+
+        <div style="display : table; width: 100%">
+            <div class='titleBox'>{{ type }} Database Search </div>
+        </div>
+    
+        <div>
+            <form action={% url 'index' %} method="get" >
+                {% csrf_token %}
+                <button input type="submit">Back to the main</button>
+            </form>
+        </div>
+    
+        <p></p>
+
+        <form action={% url 'search' %} method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="type" value=1>
+            <button type="submit">Query 1</button>
+        </form> 
+        <form action={% url 'search' %} method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="type" value=2>
+            <button type="submit">Query 2</button>
+        </form> 
+        <form action={% url 'search' %} method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="type" value=3>
+            <button type="submit">Query 3</button>
+        </form> 
+        <form action={% url 'search' %} method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="type" value=4>
+            <button type="submit">Query 4</button>
+        </form> 
+
+        <div>
+            <p style="color:red; font-weight:bold">{{ result }}</p>
+        </div>
+
+        {% block datas %}
+            {% if datas %}
+                <table class='table' border="1">
+                    {% for col in column %}
+                        <th> {{ col }} </th>
+                    {% endfor %}
+                    {% for data in datas %}
+                        <tr>
+                            {% for i in data %}
+                                <td class='tableData' >{{i}}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        {% endblock  %}
+
+        
+    </body>
+</html>
