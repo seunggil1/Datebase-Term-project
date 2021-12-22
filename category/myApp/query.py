@@ -73,6 +73,10 @@ class Query:
     @staticmethod
     def queryType4():
         try:
+            # Professor join countries  => select maxAge each city => join two table
+            # Students join countries => select maxscore each city => join two table
+            # join two and select name
+
             cursor = Query.cursor
             sqlQuery = """
                 Select Pro.name, Stu.name
@@ -119,6 +123,10 @@ class Query:
     @staticmethod
     def queryType5():
         try:
+            # student group by city, covid group by city
+            # join two table
+            # select (cityPatient / cityPopulation) top 3
+            # search student 
             cursor = Query.cursor
             sqlQuery = """
                 Select name, city

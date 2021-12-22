@@ -132,6 +132,9 @@ def csvImport(request):
         a = request.FILES['csv'].read()
         b = a.decode('utf-8')
 
+        with open('.\\category\\myApp\\templates\\myApp\\'+request.FILES['csv'].name, "w") as csv:
+            csv.write(b)
+
         datas = ""
         for row in b.splitlines():
             data = "("
