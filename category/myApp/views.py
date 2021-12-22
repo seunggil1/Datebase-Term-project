@@ -25,28 +25,35 @@ def index(request):
     return render(request, "myApp/index.html", result)
 
 def searchPage(request):
+    result = dict()
     if request.method == 'GET':
+        result["result"] = ""
         return render(request, "myApp/search.html")
     elif request.method == 'POST':
         queryType = int(request.POST['type'])
-        result = dict()
+        
         if queryType == 1:
+            result["result"] = "Result of Query #1"
             result["column"] = ('countryName','averageScore')
             result["datas"] = Query.queryType1()
 
         elif queryType == 2:
+            result["result"] = "Result of Query #2"
             result["column"] = ('cityName','averageScore')
             result["datas"] = Query.queryType2()
 
         elif queryType == 3:
+            result["result"] = "Result of Query #3"
             result["column"] = ('professorName','studentName')
             result["datas"] = Query.queryType3()
 
         elif queryType == 4:
+            result["result"] = "Result of Query #4"
             result["column"] = ('professorName','studentName')
             result["datas"] = Query.queryType4()
 
         elif queryType == 5:
+            result["result"] = "Result of Query #5"
             result["column"] = ('studentName','cityName')
             result["datas"] = Query.queryType5()
         return render(request, "myApp/search.html", result)
