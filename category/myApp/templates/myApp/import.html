@@ -13,6 +13,13 @@
     </div>
 
     <div>
+        <form action={% url 'index' %} method="get" >
+            {% csrf_token %}
+            <button input type="submit">Back to the main</button>
+        </form>
+    </div>
+
+    <div>
         <p style="color:red; font-weight:bold">{{ result }}</p>
     </div>
     <form action={% url 'csvImport' %} method="post" enctype="multipart/form-data">
@@ -20,7 +27,7 @@
         <label for="csv">Choose a csv:</label>
         <input type="hidden" name="type" value={{ type }}>
         <input type="file" name="csv" accept=".csv" required>
-            <input type="submit">Submit</button>
+            <button input type="submit">Submit</button>
     </form>
     <p></p>
     <table class='table' border="1">
